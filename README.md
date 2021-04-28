@@ -245,21 +245,21 @@ Para este proyecto decidi probar el funcionamiento de el dispositivo en una situ
 Probando el power profiler con las resistencias, revisando que las mediciones sean las correctas en la aplicacion de nRF Power Profiles App.
 
 Video: Click on the image
-[![Car](./Images/lap.png)](https://youtu.be/cVlkMNsqXnY)
+[![Laptop](./Images/lap.png)](https://youtu.be/cVlkMNsqXnY)
 
 # Bt Test:
 
 Revisando que la Raspberry Pi funcione correctamente como Gateway.
 
 Video: Click on the image
-[![Car](./Images/btrasp.jpg)](https://youtu.be/8QyenPii7Fg)
+[![Bt](./Images/btrasp.jpg)](https://youtu.be/8QyenPii7Fg)
 
 # Full Test:
 
 Aqui una prueba de todo el sistema funcionando al mismo tiempo.
 
 Video: Click on the image
-[![Car](./Images/back.png)](https://youtu.be/RgJ5gom6gcs)
+[![Full](./Images/back.png)](https://youtu.be/RgJ5gom6gcs)
 
 # The Final Product:
 
@@ -270,7 +270,7 @@ Product:
 ### Epic DEMO:
 
 Video: Click on the image
-[![Car](./Images/back.png)](pending)
+[![DEMO](./Images/back.png)](pending)
 
 # Commentary:
 
