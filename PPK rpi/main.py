@@ -8,10 +8,12 @@ import time
 import board
 import neopixel
 
+# FILL THIS WITH YOU CREDENTIALS AND CERTS FOLDER
 EndPoint = "XXXXXXXXXXXXXXX.iot.us-east-1.amazonaws.com"
 Client = "account-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 sub_topic = 'prod/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/a/gateways'
 
+# Neopixels Setup
 pixel_pin = board.D18
 num_pixels = 16
 ORDER = neopixel.GRB
@@ -19,6 +21,9 @@ ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(
     pixel_pin, num_pixels, brightness=0.1, auto_write=False, pixel_order=ORDER
 )
+
+# Setup Custom Exceptions for reset command
+
 
 class Error(Exception):
     """Base class for other exceptions"""
@@ -28,6 +33,9 @@ class Error(Exception):
 class RESET(Error):
     """Raised when Reset"""
     pass
+
+# Neo pixel functions
+
 
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
@@ -50,24 +58,30 @@ def wheel(pos):
         b = int(255 - pos * 3)
     return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
 
+
 def rainbow_cycle(wait):
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
             pixels[i] = wheel(pixel_index & 255)
         pixels.show()
-        time.sleep(wait) 
+        time.sleep(wait)
+
+# While loop
 
 while 1:
     try:
         rainbow_cycle(0.01)
+
+        # First Setup PPK Default Ampere Meter
+
         ppk2s_connected = PPK2_API.list_devices()
         ppk2_test = PPK2_API("/dev/ttyACM0")
         ppk2_test.get_modifiers()
         ppk2_test.use_ampere_meter()
+        ppk2_test.toggle_DUT_power("ON")
 
-        # Change this value for your ENDPOINT
-        
+        # Certs Folders USE YOUR CERTS!
 
         caPath = "Certs/ca.cert"
         certPath = "Certs/client.cert"
@@ -94,54 +108,57 @@ while 1:
             else:
                 print("topic: "+msg.topic)
                 if(result == 0):
+                    # Start Measuring
                     print("Start")
                     flag = True
                     ppk2_test.start_measuring()
                 elif(result == 1):
                     print("Stop")
+                    # Stop Measuring
                     ppk2_test.stop_measuring()
                     flag = False
                     pixels.fill((255, 255, 255))
                     pixels.show()
                 elif(result == 2):
                     print("Set Amp")
+                    # Setup PPK Ampere Meter
                     ppk2_test.stop_measuring()
                     ppk2_test.get_modifiers()
-                    ppk2_test.use_ampere_meter()  # set ampere meter mode
+                    ppk2_test.use_ampere_meter() 
+                    ppk2_test.toggle_DUT_power("ON")
                     ppk2_test.stop_measuring()
                     flag = False
                 elif(result == 3):
                     print("Set Vol")
+                    # Setup PPK Source Meter with 3.3 volts output
                     ppk2_test.stop_measuring()
                     ppk2_test.get_modifiers()
-                    ppk2_test.use_source_meter()  # set ampere meter mode
+                    ppk2_test.use_source_meter()  
                     ppk2_test.set_source_voltage(mV=3300)
-                    ppk2_test.toggle_DUT_power("ON")  # disable DUT power
+                    ppk2_test.toggle_DUT_power("ON")  
                     flag = False
                 elif(result == 4):
+                    # Reset System
                     raise RESET
 
         # This function trigger when we publish
-
 
         def on_publish(client, obj, mid):
             print("Data Sent")
 
         # This function trigger when we subscribe to a new topic
 
-
         def on_subscribe(client, obj, mid, granted_qos):
             print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
-
-        mqttc = paho.Client(client_id=Client")
-
+        # Setup and Start MQTT Client with SSL certificates.
+        mqttc = paho.Client(client_id=Client)
         mqttc.on_connect = on_connect
         mqttc.on_message = on_message
         mqttc.on_publish = on_publish
         mqttc.on_subscribe = on_subscribe
         mqttc.tls_set(caPath, certfile=certPath, keyfile=keyPath,
-                    cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLSv1_2, ciphers=None)
+                      cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLSv1_2, ciphers=None)
         mqttc.connect(EndPoint, 8883, keepalive=60)
         rc = 0
 
@@ -162,28 +179,32 @@ while 1:
                     read_data = ppk2_test.get_data()
                     if read_data != b'':
                         samples = ppk2_test.get_samples(read_data)
-                        print(f"Average of {len(samples)} samples is: {sum(samples)/len(samples)}uA")
+                        print(
+                            f"Average of {len(samples)} samples is: {sum(samples)/len(samples)}uA")
                         current = sum(samples)/len(samples)
-                        if(current>10000):
+                        if(current > 10000):
+                            # MACRO SHOCK Current > 10mA
                             pixels.fill((255, 0, 0))
                             pixels.show()
                             print("MACRO SHOCK DANGER")
-                        elif(current>10):
+                        elif(current > 10):
+                            # MICRO SHOCK Current > 10uA
                             pixels.fill((0, 0, 255))
                             pixels.show()
                             print("MICRO SHOCK DANGER")
                         else:
+                            # Current < 10uA
                             pixels.fill((0, 255, 0))
                             pixels.show()
                             print("OK")
-                        
+
                     time.sleep(0.001)
                 flag = False
                 ppk2_test.stop_measuring()
 
     except RESET:
         print("Reset All")
-        
+
     except KeyboardInterrupt:
         sys.exit()
     except:
