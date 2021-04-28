@@ -232,7 +232,7 @@ Para correr correctamente la gateway es necesario correr el programa con "sudo".
 Ejemplo de como recibe los mensajes el MQTT broker.
 
 Video: Click on the image
-[![Car](image)](https://youtu.be/jLefm-G0hh8)
+[![Car](./Images/mqtt.png)](https://youtu.be/jLefm-G0hh8)
 
 # Test Metodolody:
 
