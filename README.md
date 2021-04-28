@@ -12,13 +12,13 @@
 - [Materials:](#materials)
 - [Connection Diagram:](#connection-diagram)
 - [nRF5340 Setup:](#nrf5340-setup)
-  - [Ble:](#ble)
-  - [LCD:](#lcd)
-  - [Buttons:](#buttons)
+    - [**Ble**:](#ble)
+    - [**LCD**:](#lcd)
+    - [**Buttons**:](#buttons)
 - [RPi Gateway Setup:](#rpi-gateway-setup)
 - [RPi Zero Power Profiler Device Setup:](#rpi-zero-power-profiler-device-setup)
-  - [Setup MQTT API:](#setup-mqtt-api)
-  - [Setup PPK Python API:](#setup-ppk-python-api)
+    - [**Setup MQTT API**:](#setup-mqtt-api)
+    - [**Setup PPK Python API**:](#setup-ppk-python-api)
 - [Test Metodolody:](#test-metodolody)
 - [Laptop Test:](#laptop-test)
 - [Bt Test:](#bt-test)
@@ -120,7 +120,7 @@ En el CORE APPLICATION se realizo una aplicacion con las siguientes caracteristi
   - LCD 16x2 Screen (4bits mode).
   - HW Buttons.
 
-## Ble:
+### **Ble**:
 
 Para la utilizacion del BLE, se tomo como ejemplo el proyecto "peripheral_hr", utilizando su facilidad para mandar datos a nRF Cloud para mandar nuestros comandos.
 
@@ -138,7 +138,7 @@ En este caso el comando llega a travez de la Heart Rate Measurement como notific
 
 Para mas detalles, el codigo dentro de la carpeta "nRF Software/cpuapp/main.c" tiene todos los detalles comentados.
 
-## LCD:
+### **LCD**:
 
 La parte mas complicada de realizar una adaptacion de las librerias de LCD ya creadas para funcionar en los pines de la board, en este caso se utilizo un shield de Arduino para conectarlo a la board, el esquema de conexiones es el siguiente.
 
@@ -158,7 +158,7 @@ En el software se definieron de esta manera las conexiones.
 
 Para mas detalles de como funciona la liberia, el codigo dentro de la carpeta "nRF Software/cpuapp/main.c" tiene todos los detalles comentados.
 
-## Buttons:
+### **Buttons**:
 
 La utilizacion de los botones se hizo mediante la tecnica de polling con debounce de 10ms.
 
@@ -195,7 +195,7 @@ https://omnirom.org/
 
 Para utilizar el power profiler, utilice una raspberry pi zero para realizar el control Serial del profiler y ademas poder recibir los comandos por la MQTT API de nRF Cloud.
 
-## Setup MQTT API:
+### **Setup MQTT API**:
 
 Para obtener las credenciales para utilizar el MQTT API de nRF segui los pasos de la siguiente documentacion oficial.
 
@@ -217,7 +217,7 @@ Consideraciones importantes:
         Client = "account-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
         sub_topic = 'prod/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/a/gateways'
 
-## Setup PPK Python API:
+### **Setup PPK Python API**:
 
 Todo lo necesario para utilizar la API esta en la carpeta "PPK rpi".
 
