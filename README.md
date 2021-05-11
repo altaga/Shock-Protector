@@ -263,9 +263,26 @@ Video: Click on the image
 
 # The Final Product:
 
-Product:
+**nRF5340 BLE Control:**
 
-<img src="pendign" width="800">
+Case open:
+
+<img src="./Images/device1open.png" width="600">
+<img src="./Images/device1semi.png" width="600">
+
+Case Close:
+
+<img src="./Images/device1.png" width="600">
+
+**Shock Detector Device:**
+
+Case open:
+
+<img src="./Images/device2open.png" width="600">
+
+Case Close:
+
+<img src="./Images/device2.png" width="600">
 
 ### Epic DEMO:
 
