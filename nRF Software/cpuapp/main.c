@@ -202,7 +202,7 @@ void main(void)
     LCD_Init();
     LCD_Clear();
     LCD_String_xy(1, 0, "Shock Protector");
-    LCD_String_xy(2, 0, "LINK START!");
+    LCD_String_xy(2, 0, "LINK START!");     // Yeah SAO Reference......XP
     LCD_String_xy(2, 12, ".");
     // Ble Setup
     int err;
