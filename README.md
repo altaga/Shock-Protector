@@ -48,7 +48,7 @@ I want to solve the problem of early detection of these leakage currents before 
 
 # Solution:
 
-I build a system that is capable of monitoring the medical instruments or areas of contact with the patient to prevent the patient from receiving one of these shocks and, in the case of detecting these leakage currents, activate an alarm so that there is proper maintenance for the equipment or they can cancel their use.
+We will build a system that is capable of monitoring the medical instruments or areas of contact with the patient to prevent the patient from receiving one of these shocks and, in the case of detecting these leakage currents, activate an alarm so that there is proper maintenance for the equipment or they can cancel their use.
 
 Current Solutions:
 
@@ -95,7 +95,7 @@ https://omnirom.org/
 
 # Connection Diagram:
 
-  **NOTA: La solucion se realizo utilizando el nRF5340 como control BT para aislar completamente al usuario de las mediciones de las corrientes de fuga del sistema ya que las medidas son tan precisas que la misma electricidad estatica del cuerpo podria afectar a las mediciones.**
+  **NOTE: The solution was made using the nRF5340 as a BT control to completely isolate the user from the system leakage current measurements since the measurements are so precise that the same static electricity from the body could affect the measurements.**
 
 This is the connection diagram of the system:
 
@@ -103,30 +103,30 @@ This is the connection diagram of the system:
 
 # nRF5340 Setup:
 
-Los codigos estaran en la carpeta "nRF Software"
+All the code will be in the folder "nRF Software"
 
-Para programar el nRF5340, se utilizo Segger Embedded Studio instalado desde nRF Connect -> Toolchain Manager -> Segger Embedded Studio v1.5.1
+To program the nRF5340,  install Segger Embedded Studio from nRF Connect -> Toolchain Manager -> Segger Embedded Studio v1.5.1
 
 <img src="./Images/studio.png" width="1000">
 
-En el caso del CORE NETWORK se utilizo la aplicacion de ejemplo "hci_rpmsg" sin realizan ningun cambio en esta.
+In the case of CORE NETWORK, the example application "hci_rpmsg" was used without making any changes to it.
 
 <img src="./Images/hci.png" width="1000">
 
-En el CORE APPLICATION se realizo una aplicacion con las siguientes caracteristicas.
+In CORE APPLICATION an application was made with the following characteristics.
 
-- Modulos Utilizados:
+- Modules utilized:
   - BLE.
   - LCD 16x2 Screen (4bits mode).
   - HW Buttons.
 
-### **Ble**:
+### **BLE**:
 
-Para la utilizacion del BLE, se tomo como ejemplo el proyecto "peripheral_hr", utilizando su facilidad para mandar datos a nRF Cloud para mandar nuestros comandos.
+For the use of BLE, the "peripheral_hr" project was taken as an example, as it is very easy to send data to nRF Cloud and to send our commands.
 
 <img src="./Images/btcloud.gif" width="1000">
 
-En este caso el comando llega a travez de la Heart Rate Measurement como notificacion. Pueden ver como cambia de 0 a 4 indicando el comando que se requiera.
+In this case the command comes through the Heart Rate Measurement as a notification. You can see how it changes from 0 to 4 indicating which command is required.
 
 | Number | Command           |
 |--------|-------------------|
@@ -136,15 +136,15 @@ En este caso el comando llega a travez de la Heart Rate Measurement como notific
 | 03     | Set Source Meter  |
 | 04     | Restart           |
 
-Para mas detalles, el codigo dentro de la carpeta "nRF Software/cpuapp/main.c" tiene todos los detalles comentados.
+For more details, the code inside the folder "nRF Software/cpuapp/main.c" has all the details commented.
 
 ### **LCD**:
 
-La parte mas complicada de realizar una adaptacion de las librerias de LCD ya creadas para funcionar en los pines de la board, en este caso se utilizo un shield de Arduino para conectarlo a la board, el esquema de conexiones es el siguiente.
+This is the most complicated part of making an adaptation of the LCD libraries already created. As you need it to work on the pins of the board, an Arduino shield was used to connect it to the board, the connection diagram is as follows:
 
 <img src="./Images/lcd.png" width="1000">
 
-En el software se definieron de esta manera las conexiones.
+In the software the connections were defined in this way.
 
 | LCD PIN          | Board PIN |
 |------------------|-----------|
@@ -156,11 +156,11 @@ En el software se definieron de esta manera las conexiones.
 | RS               | P1.11     |
 | Backlight shield | P1.12     |
 
-Para mas detalles de como funciona la liberia, el codigo dentro de la carpeta "nRF Software/cpuapp/main.c" tiene todos los detalles comentados.
+For more details on how the library works, the code inside the folder "nRF Software/cpuapp/main.c".
 
 ### **Buttons**:
 
-La utilizacion de los botones se hizo mediante la tecnica de polling con debounce de 10ms.
+The buttons were used using the polling technique with a 10ms debounce.
 
     while (gpio_pin_get(button1, SW0_GPIO_PIN) == 1)
         {
@@ -180,11 +180,11 @@ La utilizacion de los botones se hizo mediante la tecnica de polling con debounc
             }
         }
 
-Todos los detalles estan comentados en el codigo "nRF Software/cpuapp/main.c"
+All the details can be found in the code at "nRF Software/cpuapp/main.c"
 
 # RPi Gateway Setup:
 
-Para evitar el tener que tener un celular constantemente utilizando la nRF Cloud Gateway, decidi instalar un sistama operativo de Android en una RPi 4, con el fin de que sirviera como Gateway constante.
+To avoid having to have a cell phone constantly using the nRF Cloud Gateway, I decided to install an Android operating system on a RPi 4, in order to serve as a constant Gateway.
 
 RPi Android OS: OmniROM
 https://omnirom.org/
@@ -193,25 +193,25 @@ https://omnirom.org/
 
 # RPi Zero Power Profiler Device Setup:
 
-Para utilizar el power profiler, utilice una raspberry pi zero para realizar el control Serial del profiler y ademas poder recibir los comandos por la MQTT API de nRF Cloud.
+To use the power profiler, we use a raspberry pi zero to perform the Serial control of the profiler and also be able to receive the commands through the MQTT API of nRF Cloud.
 
 ### **Setup MQTT API**:
 
-Para obtener las credenciales para utilizar el MQTT API de nRF segui los pasos de la siguiente documentacion oficial.
+To obtain the credentials to use the nRF MQTT API follow the steps in the following official documentation.
 
 https://nrfcloud.com/#/docs/guides/mqtt
 
-Para obtener todas las credenciales y certificados necesarios utilice el software Postman.
+To obtain all the necessary credentials and certificates use the Postman software.
 
 <img src="./Images/postman.png" width="1000">
 
-Para poder recibir los mensajes por MQTT utilice la libreria paho-mqtt, todo el codigo estara en la carpeta "PPK rpi".
+In order to receive messages through MQTT use the paho-mqtt library, all the code will be in the "PPK rpi" folder.
 
-Consideraciones importantes:
+Important considerations:
 
-- Guardar los 3 certificados en la carpeta Certs.
-- Escribir tu Endpoint correspondiente en el codigo main.py
-- Escribir tu clientId correspondiente en el codigo main.py
+- Save the 3 certificates in the Certs folder.
+- Write your corresponding Endpoint in the main.py code
+- Write your corresponding clientId in the main.py code
 
         EndPoint = "XXXXXXXXXXXXXXX.iot.us-east-1.amazonaws.com"
         Client = "account-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
@@ -219,44 +219,44 @@ Consideraciones importantes:
 
 ### **Setup PPK Python API**:
 
-Todo lo necesario para utilizar la API esta en la carpeta "PPK rpi".
+Everything you need to use the API is in the "PPK rpi" folder.
 
-Es necesario instalar las siguientes librerias en la RPi.
+It is necessary to install the following libraries on the RPi.
 
     pip3 install paho-mqtt adafruit-circuitpython-neopixel 
 
-Para correr correctamente la gateway es necesario correr el programa con "sudo".
+To run the gateway correctly it is necessary to run the program with "sudo".
 
     sudo python3 main.py
 
-Ejemplo de como recibe los mensajes el MQTT broker.
+Here is an example of how the MQTT broker receives messages.
 
 Video: Click on the image
 [![Car](./Images/mqtt.png)](https://youtu.be/jLefm-G0hh8)
 
 # Test Metodolody:
 
-Para este proyecto decidi probar el funcionamiento de el dispositivo en una situacion controlada donde las corrientes medidas fueran estandarizadas, en esta caso se utilizo la siguiente plataforma.
+For this project we decided to test the operation of the device in a controlled situation where the measured currents were standardized, in this case the following platform was used.
 
 <img src="./Images/TestPlatform.png" width="1000">
 
 # Laptop Test:
 
-Probando el power profiler con las resistencias, revisando que las mediciones sean las correctas en la aplicacion de nRF Power Profiles App.
+Testing the power profiler with the resistors, checking that the measurements are correct in the nRF Power Profiles App:
 
 Video: Click on the image
 [![Laptop](./Images/lap.png)](https://youtu.be/cVlkMNsqXnY)
 
-# Bt Test:
+# BT Test:
 
-Revisando que la Raspberry Pi funcione correctamente como Gateway.
+Checking that the Raspberry Pi works correctly as a Gateway.
 
 Video: Click on the image
 [![Bt](./Images/btrasp.jpg)](https://youtu.be/8QyenPii7Fg)
 
 # Full Test:
 
-Aqui una prueba de todo el sistema funcionando al mismo tiempo.
+Here is a test of the entire system running at the same time.
 
 Video: Click on the image
 [![Full](./Images/back.png)](https://youtu.be/RgJ5gom6gcs)
@@ -265,22 +265,22 @@ Video: Click on the image
 
 **nRF5340 BLE Control:**
 
-Case open:
+Open case:
 
 <img src="./Images/device1open.png" width="600">
 <img src="./Images/device1semi.png" width="600">
 
-Case Close:
+Closed case:
 
 <img src="./Images/device1.png" width="600">
 
 **Shock Detector Device:**
 
-Case open:
+Open case:
 
 <img src="./Images/device2open.png" width="600">
 
-Case Close:
+Closed case:
 
 <img src="./Images/device2.png" width="600">
 
@@ -291,7 +291,7 @@ Video: Click on the image
 
 # Commentary:
 
-// Pending
+sua bunda
 
 ## References:
 
