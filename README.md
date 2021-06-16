@@ -95,7 +95,7 @@ https://omnirom.org/
 
 # Connection Diagram:
 
-  **NOTA: La solucion se realizo utilizando el nRF5340 como control BT para aislar completamente al usuario de las mediciones de las corrientes de fuga del sistema.**
+  **NOTA: La solucion se realizo utilizando el nRF5340 como control BT para aislar completamente al usuario de las mediciones de las corrientes de fuga del sistema ya que las medidas son tan precisas que la misma electricidad estatica del cuerpo podria afectar a las mediciones.**
 
 This is the connection diagram of the system:
 
