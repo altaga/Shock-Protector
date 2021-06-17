@@ -25,8 +25,7 @@
 - [Full Test:](#full-test)
 - [The Final Product:](#the-final-product)
     - [Epic DEMO:](#epic-demo)
-- [Commentary:](#commentary)
-  - [References:](#references)
+- [References:](#references)
 
 # Introduction:
 
@@ -287,11 +286,7 @@ Closed case:
 ### Epic DEMO:
 
 Video: Click on the image
-[![DEMO](./Images/back.png)](pending)
-
-# Commentary:
-
-sua bunda
+[![DEMO](./Images/back.png)](https://youtu.be/b37HCgYLNZs)
 
 ## References:
 
